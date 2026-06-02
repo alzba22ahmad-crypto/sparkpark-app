@@ -111,7 +111,7 @@ function App() {
 
     // ب) الاستماع للبث المباشر للمواقف (Real-time Listener)
     const unsubSpots = onSnapshot(collection(db, "spots"), (snapshot) => {
-      const spotsData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      const spotsData = snapshot.docs.map(function(snap) { return Object.assign({ id: snap.id }, snap.data()); });
       setSpots(spotsData);
       console.log("Updated spots from Firebase live:", spotsData);
     }, (error) => {
@@ -120,7 +120,7 @@ function App() {
 
     // ج) الاستماع للحساسات (Real-time Listener)
     const unsubSensors = onSnapshot(collection(db, "sensors"), (snapshot) => {
-      const sensorsData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      const sensorsData = snapshot.docs.map(function(snap) { return Object.assign({ id: snap.id }, snap.data()); });
       setSensors(sensorsData);
     }, (error) => {
       console.error("Error fetching live sensors:", error);
@@ -181,7 +181,7 @@ function App() {
       <style>{GLOBAL_CSS}</style>
 
       <div style={{
-        backgroundColor: T.bg,
+        backgroundColor: T["bg"],
         minHeight: '100vh',
         position: 'relative',
         paddingBottom: (page === 'login' || page === 'signup') ? 0 : '90px'
