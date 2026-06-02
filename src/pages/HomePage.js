@@ -8,7 +8,31 @@ import { IoTSensor, OccupancyTimer, WrongCarAlert } from "../components/IoTSenso
 export default function HomePage({ setPage, user, spots, sensors }) {
   const { t } = useLang();
 
+  // ── ألوان محلية لتجنب T.x في JSX ──────────────────────────────
+  const accentColor = T["accent"];
+  const yellowColor = T["yellow"];
+  const greenColor  = T["green"];
+  const textColor   = T["text"];
+  const subColor    = T["sub"];
+
+  // ── المواقف المتوفرة ────────────────────────────────────────────
   const avail = spots ? spots.filter(function(s) { return s["status"] === "available"; }).length : 0;
+
+  // ── إيجاد موقف المستخدم الحالي من Firebase ─────────────────────
+  // نبحث عن الموقف المحجوز أو المشغول الذي يطابق تاج اليوزر
+  const userTagId = user && user.vehicle ? user["vehicle"]["tagId"] : null;
+
+  const bookedSpot = spots ? (
+    // أولاً: ابحث عن موقف tagId يطابق تاج المستخدم
+    spots.find(function(s) { return s["reservedTagId"] === userTagId || s["tagId"] === userTagId; }) ||
+    // ثانياً: إذا ما لقينا، خذ أي موقف محجوز
+    spots.find(function(s) { return s["status"] === "reserved" || s["status"] === "occupied"; })
+  ) : null;
+
+  const bookedId     = bookedSpot ? bookedSpot["id"]     : "B3";
+  const bookedZone   = bookedSpot ? bookedSpot["zone"]   : "B";
+  const bookedTagId  = bookedSpot ? (bookedSpot["reservedTagId"] || bookedSpot["tagId"] || "VH-3301") : "VH-3301";
+  const bookedStatus = bookedSpot ? bookedSpot["status"] : "reserved";
 
   const [tick, setTick] = useState(0);
   useEffect(() => {
@@ -16,18 +40,19 @@ export default function HomePage({ setPage, user, spots, sensors }) {
     return () => clearInterval(ti);
   }, []);
 
-  const accentColor  = T["accent"];
-  const yellowColor  = T["yellow"];
-  const greenColor   = T["green"];
-  const textColor    = T["text"];
-  const subColor     = T["sub"];
-
   const quickActions = [
-    { icon: "🅿️", labelKey: "bookSpot",      subKey: "bookSub",    pg: "reserve",       color: accentColor,  bg: "#eff6ff" },
-    { icon: "⚡",  labelKey: "instantPark",   subKey: "instantSub", pg: "adhoc",         color: yellowColor,  bg: "#fffbeb" },
-    { icon: "🔍", labelKey: "findCar",        subKey: "findCarSub", pg: "find",          color: greenColor,   bg: "#f0fdf4" },
-    { icon: "🔔", labelKey: "notifications",  subKey: "notifSub",   pg: "notifications", color: "#8b5cf6",    bg: "#f5f3ff" },
+    { icon: "🅿️", labelKey: "bookSpot",     subKey: "bookSub",    pg: "reserve",       color: accentColor, bg: "#eff6ff" },
+    { icon: "⚡",  labelKey: "instantPark",  subKey: "instantSub", pg: "adhoc",         color: yellowColor, bg: "#fffbeb" },
+    { icon: "🔍", labelKey: "findCar",       subKey: "findCarSub", pg: "find",          color: greenColor,  bg: "#f0fdf4" },
+    { icon: "🔔", labelKey: "notifications", subKey: "notifSub",   pg: "notifications", color: "#8b5cf6",   bg: "#f5f3ff" },
   ];
+
+  const statusLabel = {
+    reserved: { label: t.reserved, color: yellowColor, bg: "#fef3c7" },
+    occupied: { label: t.occupied, color: "#ef4444",   bg: "#fee2e2" },
+    available:{ label: t.available,color: greenColor,  bg: "#d1fae5" },
+  };
+  const badgeCfg = statusLabel[bookedStatus] || statusLabel["reserved"];
 
   return (
     <div style={{ paddingBottom: "clamp(70px,18vw,88px)" }}>
@@ -85,36 +110,49 @@ export default function HomePage({ setPage, user, spots, sensors }) {
             {spots && spots.map(function(spot) {
               const { id, status } = spot;
               const cfg = STATUS_CFG[status] || STATUS_CFG["available"];
+              const isMySpot = id === bookedId;
               return (
-                <div key={id} style={{ background: cfg["bg"], border: `1.5px solid ${cfg["color"]}55`, borderRadius: "clamp(6px,2vw,10px)", padding: "clamp(8px,2.5vw,12px) 4px", textAlign: "center" }}>
+                <div key={id} style={{
+                  background: cfg["bg"],
+                  border: isMySpot ? `2px solid ${accentColor}` : `1.5px solid ${cfg["color"]}55`,
+                  borderRadius: "clamp(6px,2vw,10px)",
+                  padding: "clamp(8px,2.5vw,12px) 4px",
+                  textAlign: "center",
+                  boxShadow: isMySpot ? `0 0 0 3px ${accentColor}33` : "none"
+                }}>
                   <div style={{ fontSize: "clamp(9px,2.5vw,11px)", fontWeight: 800, color: cfg["color"] }}>{id}</div>
+                  {isMySpot && <div style={{ fontSize: 8, color: accentColor, fontWeight: 900 }}>★</div>}
                 </div>
               );
             })}
           </div>
+          <div style={{ fontSize: 11, color: subColor, fontWeight: 600 }}>★ = {t.yourSpot || "موقفك"}</div>
         </Card>
 
-        {/* Wrong car alert */}
-        <WrongCarAlert spotId="B3" />
+        {/* Wrong car alert - يظهر تلقائياً من Firebase */}
+        <WrongCarAlert spotId={bookedId} />
 
         {/* Active booking */}
-        <Card style={{ marginBottom: "clamp(12px,3vw,16px)", animation: "fadeIn .5s ease .35s both" }}>
-          <div style={{ fontWeight: 800, fontSize: "clamp(13px,3.5vw,15px)", marginBottom: 14, color: textColor }}>{t.activeBooking}</div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <div style={{ fontSize: "clamp(26px,7vw,32px)", fontWeight: 900, color: accentColor, fontFamily: "'Poppins',sans-serif" }}>B3</div>
-              <div style={{ fontSize: "clamp(11px,3vw,13px)", color: subColor, fontWeight: 600 }}>{t.zoneB}</div>
+        {bookedSpot && (
+          <Card style={{ marginBottom: "clamp(12px,3vw,16px)", animation: "fadeIn .5s ease .35s both" }}>
+            <div style={{ fontWeight: 800, fontSize: "clamp(13px,3.5vw,15px)", marginBottom: 14, color: textColor }}>{t.activeBooking}</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontSize: "clamp(26px,7vw,32px)", fontWeight: 900, color: accentColor, fontFamily: "'Poppins',sans-serif" }}>{bookedId}</div>
+                <div style={{ fontSize: "clamp(11px,3vw,13px)", color: subColor, fontWeight: 600 }}>{t.zone || "Zone"} {bookedZone}</div>
+                <div style={{ fontSize: 11, color: subColor, marginTop: 4, fontFamily: "monospace", fontWeight: 700 }}>🏷️ {bookedTagId}</div>
+              </div>
+              <Badge label={badgeCfg["label"]} color={badgeCfg["color"]} bg={badgeCfg["bg"]} />
             </div>
-            <Badge label={t.reserved} color={yellowColor} bg="#fef3c7" />
-          </div>
-          <Btn onClick={() => setPage("checkout")} style={{ marginTop: 12 }} icon="🚪">{t.checkout}</Btn>
-        </Card>
+            <Btn onClick={() => setPage("checkout")} style={{ marginTop: 12 }} icon="🚪">{t.checkout}</Btn>
+          </Card>
+        )}
 
-        {/* Occupancy timer */}
-        <OccupancyTimer spotId="B3" pricePerHour={2} />
+        {/* Occupancy timer - يظهر تلقائياً من Firebase لما السيارة تدخل */}
+        <OccupancyTimer spotId={bookedId} pricePerHour={2} />
 
-        {/* IoT Sensor */}
-        <IoTSensor reservedSpot="B3" reservedTagId="VH-3301" />
+        {/* IoT Sensor simulation */}
+        <IoTSensor reservedSpot={bookedId} reservedTagId={bookedTagId} />
 
       </div>
     </div>
