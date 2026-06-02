@@ -109,21 +109,29 @@ function App() {
 
     initializeDatabase();
 
-    // ب) الاستماع للبث المباشر للمواقف (Real-time Listener)
-    const unsubSpots = onSnapshot(collection(db, "spots"), (snapshot) => {
-      const spotsData = snapshot.docs.map(function(snap) { return Object.assign({ id: snap.id }, snap.data()); });
+    const unsubSpots = onSnapshot(collection(db, "spots"), function(snapshot) {
+      const spotsData = [];
+      snapshot.forEach(function(snap) {
+        const row = snap["data"]();
+        row["id"] = snap["id"];
+        spotsData.push(row);
+      });
       setSpots(spotsData);
       console.log("Updated spots from Firebase live:", spotsData);
-    }, (error) => {
-      console.error("Error fetching live spots:", error);
+    }, function(err) {
+      console.error("Error fetching live spots:", err);
     });
 
-    // ج) الاستماع للحساسات (Real-time Listener)
-    const unsubSensors = onSnapshot(collection(db, "sensors"), (snapshot) => {
-      const sensorsData = snapshot.docs.map(function(snap) { return Object.assign({ id: snap.id }, snap.data()); });
+    const unsubSensors = onSnapshot(collection(db, "sensors"), function(snapshot) {
+      const sensorsData = [];
+      snapshot.forEach(function(snap) {
+        const row = snap["data"]();
+        row["id"] = snap["id"];
+        sensorsData.push(row);
+      });
       setSensors(sensorsData);
-    }, (error) => {
-      console.error("Error fetching live sensors:", error);
+    }, function(err) {
+      console.error("Error fetching live sensors:", err);
     });
 
     return () => { unsubSpots(); unsubSensors(); };
