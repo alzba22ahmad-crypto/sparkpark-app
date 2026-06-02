@@ -49,12 +49,12 @@ function App() {
     // أ) بناء الداتا بيز تلقائياً بجميع الجداول المطلوبة
     const initializeDatabase = async () => {
       try {
-        // 1. جدول المواقف (spots)
+        // 1. جدول المواقف (spots) — نستخدم merge:true لحماية بيانات الإشغال والتنبيهات
         const spotsRef = collection(db, "spots");
-        await setDoc(doc(spotsRef, "A1"), { id: "A1", status: "available", dist: 2, lat: 26.3927, lng: 50.1917, zone: "A" });
-        await setDoc(doc(spotsRef, "A2"), { id: "A2", status: "occupied", dist: 3, lat: 26.3928, lng: 50.1918, zone: "A" });
-        await setDoc(doc(spotsRef, "B3"), { id: "B3", status: "available", dist: 5, lat: 26.3930, lng: 50.1920, zone: "B" });
-        await setDoc(doc(spotsRef, "B4"), { id: "B4", status: "available", dist: 12, lat: 26.3935, lng: 50.1925, zone: "B" });
+        await setDoc(doc(spotsRef, "A1"), { id: "A1", status: "available", dist: 2, lat: 26.3927, lng: 50.1917, zone: "A" }, { merge: true });
+        await setDoc(doc(spotsRef, "A2"), { id: "A2", status: "occupied",  dist: 3, lat: 26.3928, lng: 50.1918, zone: "A" }, { merge: true });
+        await setDoc(doc(spotsRef, "B3"), { id: "B3", status: "reserved",  dist: 5, lat: 26.3930, lng: 50.1920, zone: "B", reservedTagId: "VH-3301" }, { merge: true });
+        await setDoc(doc(spotsRef, "B4"), { id: "B4", status: "available", dist: 12, lat: 26.3935, lng: 50.1925, zone: "B" }, { merge: true });
 
         // 2. جدول الحساسات (sensors) للـ IoT
         const sensorsRef = collection(db, "sensors");

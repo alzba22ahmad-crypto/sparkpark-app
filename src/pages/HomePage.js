@@ -3,7 +3,7 @@ import { T, STATUS_CFG } from "../data/constants";
 import { useLang } from "../context/LanguageContext";
 import { Btn, Card, Badge } from "../components/UI";
 import { HeroHeader, SliderBanner, PhotoStrip } from "../components/Visuals";
-import { IoTSensor } from "../components/IoTSensors";
+import { IoTSensor, OccupancyTimer, WrongCarAlert } from "../components/IoTSensors";
 
 export default function HomePage({ setPage, user, spots }) {
   const { t } = useLang();
@@ -38,6 +38,9 @@ export default function HomePage({ setPage, user, spots }) {
       </div>
 
       <div style={{ padding: "0 clamp(14px,4vw,20px)" }}>
+        {/* Wrong car alert - يظهر تلقائياً إذا كانت سيارة غير مصرح لها */}
+        <WrongCarAlert spotId="B3" />
+
         {/* Quick actions - الأزرار السريعة */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(10px,3vw,14px)", marginBottom: "clamp(12px,3vw,16px)" }}>
           {quickActions.map((a, i) => (
@@ -94,6 +97,9 @@ export default function HomePage({ setPage, user, spots }) {
           </div>
           <Btn onClick={() => setPage("checkout")} style={{ marginTop: 12 }} icon="🚪">{t.checkout}</Btn>
         </Card>
+
+        {/* Occupancy timer - يظهر تلقائياً عند دخول السيارة الصحيحة */}
+        <OccupancyTimer spotId="B3" pricePerHour={2} />
 
         <IoTSensor reservedSpot="B3" reservedTagId="VH-3301" />
       </div>

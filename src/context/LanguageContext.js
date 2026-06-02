@@ -74,6 +74,21 @@ const translations = {
     accessDenied: "غير مسموح",
     sensorIdle: "الحساس في وضع الانتظار...",
     scanAgain: "محاكاة مجددًا",
+    access: "الوصول",
+
+    // Occupancy Timer
+    occupancyTimer: "عداد الإشغال",
+    timeOccupied: "مدة الإشغال",
+    currentCost: "التكلفة المتراكمة",
+
+    // Wrong Car Alert
+    wrongCarTitle: "⚠️ سيارة غير مصرح لها",
+    moveCarAlert: "يجب تحريك السيارة خلال",
+    moveCarMin: "دقيقة",
+    moveCarNow: "🚨 انتهت مهلة التحريك! تصرف فوراً",
+    wrongCarTag: "Tag ID للسيارة المتعدية",
+    timeRemaining: "الوقت المتبقي",
+    clearAlert: "إغلاق التنبيه",
 
     // AdHoc
     parkNow: "ركن الآن بدون حجز",
@@ -285,6 +300,21 @@ const translations = {
     accessDenied: "Access Denied",
     sensorIdle: "Sensor in standby mode...",
     scanAgain: "Simulate Again",
+    access: "Access",
+
+    // Occupancy Timer
+    occupancyTimer: "Occupancy Timer",
+    timeOccupied: "Time Occupied",
+    currentCost: "Accumulated Cost",
+
+    // Wrong Car Alert
+    wrongCarTitle: "⚠️ Unauthorized Vehicle Detected",
+    moveCarAlert: "Please move your car within",
+    moveCarMin: "min",
+    moveCarNow: "🚨 Move deadline expired! Act now",
+    wrongCarTag: "Unauthorized Car Tag",
+    timeRemaining: "Time Remaining",
+    clearAlert: "Dismiss Alert",
 
     // AdHoc
     parkNow: "Park Without Booking",
