@@ -74,6 +74,21 @@ const translations = {
     accessDenied: "غير مسموح",
     sensorIdle: "الحساس في وضع الانتظار...",
     scanAgain: "محاكاة مجددًا",
+    access: "الوصول",
+
+    // Occupancy Timer
+    occupancyTimer: "عداد الإشغال",
+    timeOccupied: "مدة الإشغال",
+    currentCost: "التكلفة المتراكمة",
+
+    // Wrong Car Alert
+    wrongCarTitle: "⚠️ سيارة غير مصرح لها",
+    moveCarAlert: "يجب تحريك السيارة خلال",
+    moveCarMin: "دقيقة",
+    moveCarNow: "🚨 انتهت مهلة التحريك! تصرف فوراً",
+    wrongCarTag: "Tag ID للسيارة المتعدية",
+    timeRemaining: "الوقت المتبقي",
+    clearAlert: "إغلاق التنبيه",
 
     // AdHoc
     parkNow: "ركن الآن بدون حجز",
@@ -195,6 +210,22 @@ const translations = {
     messageSent: "تم الإرسال!",
     replyTime: "سنرد خلال 24 ساعة",
 
+    // AI Prediction
+    aiPrediction: "توقع الذكاء الاصطناعي",
+    liveAnalysis: "تحليل مباشر",
+    nowOccupancy: "نسبة الإشغال الآن",
+    next8Hours: "الـ 8 ساعات القادمة",
+    bestTimes: "أفضل أوقات الوصول اليوم",
+
+    // Parking Pages extras
+    filterZone: "تصفية المنطقة",
+    noSpotsZone: "لا توجد مواقف في هذه المنطقة",
+    noSpotsAvail: "لا توجد مواقف متاحة",
+    free: "مجاني",
+    navigateToSpot: "التنقل إلى الموقف",
+    confirmed: "مؤكد",
+    yourSpot: "موقفك",
+
     // Slider
     slide1Title: "احجز في ثوانٍ!",
     slide1Tag: "حجز ذكي",
@@ -285,6 +316,21 @@ const translations = {
     accessDenied: "Access Denied",
     sensorIdle: "Sensor in standby mode...",
     scanAgain: "Simulate Again",
+    access: "Access",
+
+    // Occupancy Timer
+    occupancyTimer: "Occupancy Timer",
+    timeOccupied: "Time Occupied",
+    currentCost: "Accumulated Cost",
+
+    // Wrong Car Alert
+    wrongCarTitle: "⚠️ Unauthorized Vehicle Detected",
+    moveCarAlert: "Please move your car within",
+    moveCarMin: "min",
+    moveCarNow: "🚨 Move deadline expired! Act now",
+    wrongCarTag: "Unauthorized Car Tag",
+    timeRemaining: "Time Remaining",
+    clearAlert: "Dismiss Alert",
 
     // AdHoc
     parkNow: "Park Without Booking",
@@ -405,6 +451,22 @@ const translations = {
     sendBtn: "Send",
     messageSent: "Sent!",
     replyTime: "We'll reply within 24 hours",
+
+    // AI Prediction
+    aiPrediction: "AI Prediction",
+    liveAnalysis: "Live Analysis",
+    nowOccupancy: "Current Occupancy",
+    next8Hours: "Next 8 Hours",
+    bestTimes: "Best Times Today",
+
+    // Parking Pages extras
+    filterZone: "Filter Zone",
+    noSpotsZone: "No spots in this zone",
+    noSpotsAvail: "No spots available",
+    free: "Free",
+    navigateToSpot: "Navigate to Spot",
+    confirmed: "Confirmed",
+    yourSpot: "Your Spot",
 
     // Slider
     slide1Title: "Book in Seconds!",

@@ -98,3 +98,49 @@ input, textarea, select { font-family: 'Nunito', sans-serif; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #c5d8f5; border-radius: 4px; }
 `;
+
+// ── AI Occupancy Prediction ─────────────────────────────────────────────────
+// نمط إشغال جامعة الإمام عبدالرحمن بن فيصل (أحد-خميس = دوام، جمعة-سبت = عطلة)
+export const AI_PATTERNS = {
+  weekday: [
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.10,
+    0.20, 0.50, 0.90, 0.95, 0.95, 0.85,
+    0.70, 0.85, 0.90, 0.80, 0.55, 0.30,
+    0.20, 0.15, 0.10, 0.10, 0.05, 0.05,
+  ],
+  weekend: [
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.10, 0.15, 0.20, 0.25, 0.30,
+    0.25, 0.20, 0.15, 0.15, 0.10, 0.10,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+  ],
+};
+
+export function predictOccupancy(hour, dayOfWeek) {
+  const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+  const key = isWeekend ? "weekend" : "weekday";
+  const rate = AI_PATTERNS[key][hour] || 0.05;
+  var level, labelAr, labelEn, color, emoji;
+  if (rate >= 0.8) {
+    level = "high";   labelAr = "مزدحم جداً"; labelEn = "Very Busy"; color = "#ef4444"; emoji = "🔴";
+  } else if (rate >= 0.5) {
+    level = "medium"; labelAr = "متوسط";      labelEn = "Moderate";  color = "#f59e0b"; emoji = "🟡";
+  } else {
+    level = "low";    labelAr = "هادئ";        labelEn = "Quiet";     color = "#10b981"; emoji = "🟢";
+  }
+  return { level: level, labelAr: labelAr, labelEn: labelEn, color: color, emoji: emoji, rate: rate };
+}
+
+export function getBestParkingTimes(dayOfWeek) {
+  const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+  const key = isWeekend ? "weekend" : "weekday";
+  const hours = AI_PATTERNS[key];
+  const indexed = hours.map(function(rate, index) { return { hour: index, rate: rate }; });
+  indexed.sort(function(a, b) { return a["rate"] - b["rate"]; });
+  return indexed.slice(0, 3).map(function(item) {
+    var h = item["hour"];
+    var ampm = h >= 12 ? "PM" : "AM";
+    var h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return h12 + ":00 " + ampm;
+  });
+}
