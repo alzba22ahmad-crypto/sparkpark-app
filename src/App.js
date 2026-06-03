@@ -171,7 +171,7 @@ function App() {
         return <VehiclesPage user={user} setPage={setPage} />;
 
       case 'checkout':
-        return <CheckoutPage setPage={setPage} selectedSpot={selectedSpot} user={user} />;
+        return <CheckoutPage setPage={setPage} selectedSpot={selectedSpot} user={user} spots={spots} />;
 
       case 'notifications':
         return <NotificationsPage setPage={setPage} />;

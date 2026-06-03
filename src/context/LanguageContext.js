@@ -210,6 +210,22 @@ const translations = {
     messageSent: "تم الإرسال!",
     replyTime: "سنرد خلال 24 ساعة",
 
+    // AI Prediction
+    aiPrediction: "توقع الذكاء الاصطناعي",
+    liveAnalysis: "تحليل مباشر",
+    nowOccupancy: "نسبة الإشغال الآن",
+    next8Hours: "الـ 8 ساعات القادمة",
+    bestTimes: "أفضل أوقات الوصول اليوم",
+
+    // Parking Pages extras
+    filterZone: "تصفية المنطقة",
+    noSpotsZone: "لا توجد مواقف في هذه المنطقة",
+    noSpotsAvail: "لا توجد مواقف متاحة",
+    free: "مجاني",
+    navigateToSpot: "التنقل إلى الموقف",
+    confirmed: "مؤكد",
+    yourSpot: "موقفك",
+
     // Slider
     slide1Title: "احجز في ثوانٍ!",
     slide1Tag: "حجز ذكي",
@@ -435,6 +451,22 @@ const translations = {
     sendBtn: "Send",
     messageSent: "Sent!",
     replyTime: "We'll reply within 24 hours",
+
+    // AI Prediction
+    aiPrediction: "AI Prediction",
+    liveAnalysis: "Live Analysis",
+    nowOccupancy: "Current Occupancy",
+    next8Hours: "Next 8 Hours",
+    bestTimes: "Best Times Today",
+
+    // Parking Pages extras
+    filterZone: "Filter Zone",
+    noSpotsZone: "No spots in this zone",
+    noSpotsAvail: "No spots available",
+    free: "Free",
+    navigateToSpot: "Navigate to Spot",
+    confirmed: "Confirmed",
+    yourSpot: "Your Spot",
 
     // Slider
     slide1Title: "Book in Seconds!",
